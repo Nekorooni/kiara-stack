@@ -1,0 +1,48 @@
+version: "3.1"
+services:
+
+  kiara:
+    build: https://github.com/Nekorooni/Kiara.git
+    container_name: kiara
+    depends_on:
+      - db
+      - redis
+    env_file:
+      - .env
+    environment:
+      - PYTHONUNBUFFERED=1
+    restart: always
+
+  # Storage
+  db:
+    image: mysql:5.7.22
+    container_name: db
+    volumes:
+      - ./db.cnf:/etc/mysql/conf.d/rub.cnf
+      - ./db-init/:/docker-entrypoint-initdb.d/
+      - db-store:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD
+      - MYSQL_DATABASE
+      - MYSQL_USER
+      - MYSQL_PASSWORD
+    restart: always
+
+  redis:
+    image: redis:4.0.9-alpine
+    container_name: redis
+    volumes:
+      - redis-store:/data
+    restart: always
+  
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: phpmyadmin
+    ports:
+      - "8080:80"
+    restart: always
+    
+
+volumes:
+  db-store:
+  redis-store:

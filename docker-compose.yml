@@ -18,7 +18,7 @@ services:
     image: mysql:5.7.22
     container_name: db
     volumes:
-      - ./db.cnf:/etc/mysql/conf.d/rub.cnf
+      - ./db.cnf:/etc/mysql/conf.d/kiara.cnf
       - ./db-init/:/docker-entrypoint-initdb.d/
       - db-store:/var/lib/mysql
     environment:

@@ -94,7 +94,7 @@ services:
     environment:
       - REDIS_ADDR=redis://redis
     command:
-      - '-check-single-keys=metrics:guild:member_count'
+      - '-check-single-keys=${REDIS_METRICS_SINGLE_KEYS:-none}'
     restart: always
     
 

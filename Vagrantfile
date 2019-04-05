@@ -3,9 +3,24 @@
 
 Vagrant.configure("2") do |config|
 
+  required_plugins = %w( vagrant-vbguest vagrant-disksize )
+  _retry = false
+  required_plugins.each do |plugin|
+  	unless Vagrant.has_plugin? plugin
+      system "vagrant plugin install #{plugin}"
+      _retry=true
+    end
+  end
+
+  if (_retry)
+    exec "vagrant " + ARGV.join(' ')
+  end
+
   config.vm.define "kiara-dev"
   
   config.vm.box = "debian/stretch64"
+  
+  config.disksize.size = "20GB"
 
   config.vm.provider "virtualbox" do |v|
     v.name = "vagrant kiara-dev"
@@ -14,6 +29,8 @@ Vagrant.configure("2") do |config|
   end
   
   config.vm.network "forwarded_port", guest: 8080, host: 8080
+  config.vm.network "forwarded_port", guest: 9090, host: 9090
+  config.vm.network "forwarded_port", guest: 3000, host: 3000
   
   
   config.vm.synced_folder '../Kiara/', '/usr/src/kiara'

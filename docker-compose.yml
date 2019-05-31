@@ -31,15 +31,18 @@ services:
   redis:
     image: redis:4.0.9-alpine
     container_name: redis
+    ports:
+      - "6379:6379"
     volumes:
       - redis-store:/data
+    command: redis-server --requirepass ${REDIS_PASSWORD}
     restart: always
   
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
     container_name: phpmyadmin
     ports:
-      - "9001:80"
+      - "8080:80"
     restart: always
   
   prometheus:

@@ -97,7 +97,7 @@ services:
     environment:
       - REDIS_ADDR=redis://redis
     command:
-      - '-check-single-keys=${REDIS_METRICS_SINGLE_KEYS:-none}'
+      - '-check-single-keys=${REDIS_METRICS_SINGLE_KEYS:-none} -redis.password=${REDIS_PASSWORD}'
     restart: always
     
 
